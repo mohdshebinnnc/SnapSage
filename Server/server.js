@@ -1,15 +1,17 @@
-const express=require("express")
-// const DbConnection =require("./db/dbConnection")
-require("dotenv").config()
-const cors = require("cors");
+import express from "express" 
+import DbConnection from "./db/dbConnection.js"
+// require("dotenv").config()
+import "dotenv/config"
+import cors from "cors";
+import userRouter from "./routes/userRoutes.js"
 
 const app=express()
 app.use(express.json())
 app.use(cors())
 
-// DbConnection()
+DbConnection()
 
-
+app.use("/api/user",userRouter)
 
 
 app.listen(process.env.PORT,()=>{
