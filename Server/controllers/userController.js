@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 export const registerUser=async(req,res)=>{
     try {
         const {name,email,password}=req.body
+        console.log('Received in registerUser:', req.body);
         if (!name||!email||!password){
             return res.status(400).json({error:"All fields are required!!"})
         }
@@ -15,7 +16,7 @@ export const registerUser=async(req,res)=>{
         }
 
         const hashedPassword=await bcrypt.hash(password,10)
-        JWT_SECRET
+        
         const newUser=new UserModel({name,email,password:hashedPassword})
         const user=await newUser.save()
 
@@ -23,12 +24,10 @@ export const registerUser=async(req,res)=>{
         res.status(201).json({message: "User registered successfully!",token,
             user:{
                 name:user.name,
-                email:user.email,
-                password:user.password
+                email:user.email
             }
         })
 
-        // res.status(201).json({message:"User regitered successfully!",userId:newUser._id})
     } catch (error) {
         console.error(error)
         res.status(500).json({ error: "Server error. Please try again later." })
@@ -64,19 +63,43 @@ export const loginUser=async(req,res)=>{
     }
 }
 
-export const userCredits=async(req,res)=>{
-    try {
-        const {userId}=req.body
-        const user=await UserModel.findById(userId)
+// export const userCredits=async(req,res)=>{
+//     try {
+//         const {userId}=req.body
+//         const user=await UserModel.findById(userId)
 
-        res.status(201).json({success:true,credits:user.creditBalance,
-            user:{
-                name:user.name,
-                email:user.email,
+//         res.status(201).json({success:true,credits:user.creditBalance,
+//             user:{
+//                 name:user.name,
+//                 email:user.email,
+//             }
+//         })
+//     } catch (error) {
+//         console.error(error)
+//         res.status(500).json({ error: "Server error. Please try again later." })
+//     }
+// }
+export const userCredits = async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(" ")[1];
+        if (!token) return res.status(401).json({ success: false, message: "No token provided" });
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.id;
+
+        const user = await UserModel.findById(userId);
+        if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+        res.status(200).json({
+            success: true,
+            credits: user.creditBalance,
+            user: {
+                name: user.name,
+                email: user.email
             }
-        })
+        });
     } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: "Server error. Please try again later." })
+        console.error(error);
+        res.status(500).json({ error: "Server error. Please try again later." });
     }
-}
+};
