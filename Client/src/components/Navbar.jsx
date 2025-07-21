@@ -10,10 +10,11 @@ const Navbar = () => {
 
     return (
         <div className='flex items-center justify-between py-4'>
-            <Link to="/ " className='flex gap-3'>
-                <img src={assets.logo_icon} className='w-28 sm:w-32 lg:w-10' />
-                <p className='text-3xl font-semibold'>Snapsage</p>
+            <Link to="/" className="flex items-center gap-2 sm:gap-3">
+                <img src={assets.logo_icon} className="w-10 sm:w-12 md:w-10" />
+                <p className="text-xl sm:text-2xl md:text-3xl font-semibold whitespace-nowrap">Snapsage</p>
             </Link>
+
 
             <div>
                 {user ?
