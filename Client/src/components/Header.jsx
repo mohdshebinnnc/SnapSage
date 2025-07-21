@@ -76,7 +76,7 @@ const Header = () => {
                 animate={{opacity:1}}
                 transition={{delay:1.2,duration:0.8}}
             >
-                Generated images from imagify
+                Generated images from Snapsage
             </motion.p>
 
         </motion.div>
