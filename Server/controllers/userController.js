@@ -8,7 +8,6 @@ import TransactionModel from "../models/transactionModel.js";
 export const registerUser=async(req,res)=>{
     try {
         const {name,email,password}=req.body
-        console.log('Received in registerUser:', req.body);
         if (!name||!email||!password){
             return res.status(400).json({error:"All fields are required!!"})
         }
