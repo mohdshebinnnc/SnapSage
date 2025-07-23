@@ -1,4 +1,4 @@
-# 📸 SnapSage - AI Image Generator
+#  SnapSage - AI Image Generator
 
 ## 📌 Project Overview
 

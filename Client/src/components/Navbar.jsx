@@ -15,7 +15,6 @@ const Navbar = () => {
                 <p className="text-xl sm:text-2xl md:text-3xl font-semibold whitespace-nowrap">Snapsage</p>
             </Link>
 
-
             <div>
                 {user ?
                     <div className='flex items-center gap-2 sm:gap-3'>
