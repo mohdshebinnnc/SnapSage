@@ -39,7 +39,7 @@ const Login = () => {
             }
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
-                toast.error(error.response.data.error); // e.g., "Email already in use!"
+                toast.error(error.response.data.error); 
             } else {
                 toast.error('An unexpected error occurred. Please try again.');
             }
