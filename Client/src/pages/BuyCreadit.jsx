@@ -12,7 +12,32 @@ const BuyCreadit = () => {
 
   const navigate=useNavigate()
   const initPay=async(order)=>{
-    
+    const options={
+      key:import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount:order.amount,
+      currency:order.currency,
+      name:'Credits Payment',
+      description:'Credits Payment',
+      order_id:order.id,
+      receipt:order.receipt,
+      handler:async(response)=>{
+        try {
+          const {data}=await axios.post(`${API_BASE_URL}/api/user/verify-razor`,response,{headers:{Authorization: `Bearer ${token}` }})
+
+          if (data.success){
+            loadCreditData()
+            navigate('/')
+            toast.success('Credit Added!')
+          }
+
+        } catch (error) {
+          toast.error(error.message)
+        }
+      }
+
+    }
+    const rzp=new window.Razorpay(options)
+    rzp.open()
   }
 
   const paymentRazorpay=async(planId)=>{
@@ -20,7 +45,7 @@ const BuyCreadit = () => {
       if (!user){
         setShowLogin(true)
       }
-      const {data}= await axios.post(`${API_BASE_URL}/api/user/pay-razor`, {planId}, {headers:{token}})
+      const {data}= await axios.post(`${API_BASE_URL}/api/user/pay-razor`, {planId}, {headers:{Authorization: `Bearer ${token}` }})
 
       if(data.success){
         initPay(data.order)

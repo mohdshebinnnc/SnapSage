@@ -5,7 +5,7 @@ import axios from "axios"
 export const generateImage=async(req,res)=>{
     try {
         const prompt = req.body.prompt;
-        const userId = req.user.id;
+        const userId = req.userId;
         const user=await UserModel.findById(userId)
 
         if(!user||!prompt){
@@ -22,6 +22,7 @@ export const generateImage=async(req,res)=>{
         const {data}= await axios.post("https://clipdrop-api.co/text-to-image/v1",formData,{
             headers: {
                 'x-api-key': process.env.CLIPDROP_API,
+                ...formData.getHeaders(),
             },
             responseType:'arraybuffer'
         })
